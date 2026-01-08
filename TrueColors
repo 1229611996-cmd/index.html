@@ -1,0 +1,511 @@
+Initial commit
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>True Colors 出色真我性格测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .test-content {
+            padding: 30px;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            background: #f8f9fa;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .question-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .options label {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .options label:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .options input[type="radio"]:checked + span {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .options input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .result {
+            display: none;
+            padding: 30px;
+            text-align: center;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .color-result {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .gold { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #333; }
+        .orange { background: linear-gradient(135deg, #FFA500 0%, #FF6347 100%); }
+        .green { background: linear-gradient(135deg, #32CD32 0%, #228B22 100%); }
+        .blue { background: linear-gradient(135deg, #1E90FF 0%, #0000CD 100%); }
+        
+        .score-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .score-item {
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            min-width: 120px;
+        }
+        
+        .description {
+            text-align: left;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+        
+        .share-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #e8f4f8;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .share-btn {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            height: 10px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>True Colors 出色真我性格测试</h1>
+            <p>发现您原本的颜色，了解真实的自己</p>
+        </div>
+        
+        <div class="test-content">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            
+            <form id="personalityTest">
+                <!-- 题目1 -->
+                <div class="question">
+                    <div class="question-title">1. 如果你彩票中奖100万，你第一件想做的事情是？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="orange" required> <span>开一个热闹的大型Party</span></label>
+                        <label><input type="radio" name="q1" value="gold"> <span>存到银行里后续作为家庭支出</span></label>
+                        <label><input type="radio" name="q1" value="blue"> <span>邀请好友闺蜜分享</span></label>
+                        <label><input type="radio" name="q1" value="green"> <span>用这笔钱去创业或完成自己想做的事</span></label>
+                    </div>
+                </div>
+                
+                <!-- 题目2 -->
+                <div class="question">
+                    <div class="question-title">2. 当你面临突然的意外事件，你会？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="orange" required> <span>笑一笑，然后继续</span></label>
+                        <label><input type="radio" name="q2" value="gold"> <span>一边嘴上抱怨，一边马上会去找相关责任人</span></label>
+                        <label><input type="radio" name="q2" value="blue"> <span>很难过</span></label>
+                        <label><input type="radio" name="q2" value="green"> <span>思考为什么会发生这个问题以及解决方案是什么</span></label>
+                    </div>
+                </div>
+                
+                <!-- 题目3 -->
+                <div class="question">
+                    <div class="question-title">3. 你更偏好从事什么样的工作？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q3" value="orange" required> <span>新鲜有意思，有挑战，有发挥空间的工作</span></label>
+                        <label><input type="radio" name="q3" value="gold"> <span>相对稳定单一的工作，事业单位，法律，财务等</span></label>
+                        <label><input type="radio" name="q3" value="blue"> <span>与人相关，有价值感成就感的工作更好</span></label>
+                        <label><input type="radio" name="q3" value="green"> <span>计算机与科学，哲学、金融等</span></label>
+                    </div>
+                </div>
+                
+                <!-- 题目4 -->
+                <div class="question">
+                    <div class="question-title">4. 你理想中的假期是？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q4" value="orange" required> <span>海上运动，跳伞等没有接触过的运动</span></label>
+                        <label><input type="radio" name="q4" value="gold"> <span>和家人一起度过</span></label>
+                        <label><input type="radio" name="q4" value="blue"> <span>跟喜欢的朋友一起的美好旅行</span></label>
+                        <label><input type="radio" name="q4" value="green"> <span>未知或科学方面的探索</span></label>
+                    </div>
+                </div>
+                
+                <!-- 题目5 -->
+                <div class="question">
+                    <div class="question-title">5. 在亲密关系中，你更看重？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q5" value="orange" required> <span>吃吃喝喝、玩玩乐乐</span></label>
+                        <label><input type="radio" name="q5" value="gold"> <span>保持"安全"不过分亲密</span></label>
+                        <label><input type="radio" name="q5" value="blue"> <span>重视走心的情感流动</span></label>
+                        <label><input type="radio" name="q5" value="green"> <span>兴趣知识上的探索和分享</span></label>
+                    </div>
+                </div>
+                
+                <!-- 题目6 -->
+                <div class="question">
+                    <div class="question-title">6. 以下哪个词最能描述你？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q6" value="orange" required> <span>行动</span></label>
+                        <label><input type="radio" name="q6" value="gold"> <span>责任</span></label>
+                        <label><input type="radio" name="q6" value="blue"> <span>真诚</span></label>
+                        <label><input type="radio" name="q6" value="green"> <span>智慧</span></label>
+                    </div>
+                </div>
+                
+                <!-- 题目7 -->
+                <div class="question">
+                    <div class="question-title">7. 做决定时，你更依赖？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q7" value="orange" required> <span>突发奇想的念头</span></label>
+                        <label><input type="radio" name="q7" value="gold"> <span>之前的惯例及步骤</span></label>
+                        <label><input type="radio" name="q7" value="blue"> <span>感觉和情绪</span></label>
+                        <label><input type="radio" name="q7" value="green"> <span>逻辑和研究</span></label>
+                    </div>
+                </div>
+                
+                <!-- 题目8 -->
+                <div class="question">
+                    <div class="question-title">8. 如果一只流浪狗突然出现在你家门口，你会？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q8" value="orange" required> <span>把它抓起来当俘虏</span></label>
+                        <label><input type="radio" name="q8" value="gold"> <span>关门并打电话报警</span></label>
+                        <label><input type="radio" name="q8" value="blue"> <span>试着跟它当朋友并邀请它进来</span></label>
+                        <label><input type="radio" name="q8" value="green"> <span>问它从哪里来？怎么到这里的？</span></label>
+                    </div>
+                </div>
+                
+                <!-- 题目9 -->
+                <div class="question">
+                    <div class="question-title">9. 你希望成为什么样的人？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q9" value="orange" required> <span>明星、艺术家、站在台上的人</span></label>
+                        <label><input type="radio" name="q9" value="gold"> <span>CEO、实干家、裁判</span></label>
+                        <label><input type="radio" name="q9" value="blue"> <span>心理导师、助人者或"爱的使者"</span></label>
+                        <label><input type="radio" name="q9" value="green"> <span>发明家、科学家或哲学家</span></label>
+                    </div>
+                </div>
+                
+                <!-- 题目10 -->
+                <div class="question">
+                    <div class="question-title">10. 在团队中，你什么时候感觉最舒适？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q10" value="orange" required> <span>当你是带领人时</span></label>
+                        <label><input type="radio" name="q10" value="gold"> <span>当你在一个有规则规划的团体里</span></label>
+                        <label><input type="radio" name="q10" value="blue"> <span>当你与喜欢的人在一起时</span></label>
+                        <label><input type="radio" name="q10" value="green"> <span>当没有人打扰你时</span></label>
+                    </div>
+                </div>
+                
+                <!-- 题目11 -->
+                <div class="question">
+                    <div class="question-title">11. 你希望别人怎么评价你？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q11" value="orange" required> <span>勇敢、有冒险精神</span></label>
+                        <label><input type="radio" name="q11" value="gold"> <span>实际、可靠的</span></label>
+                        <label><input type="radio" name="q11" value="blue"> <span>温暖、真诚、有爱</span></label>
+                        <label><input type="radio" name="q11" value="green"> <span>有能力、有知识</span></label>
+                    </div>
+                </div>
+                
+                <button type="button" class="submit-btn" onclick="calculateResult()">查看我的性格颜色</button>
+            </form>
+            
+            <div class="result" id="resultSection">
+                <h2>您的性格颜色是：</h2>
+                <div class="color-result" id="mainColor">...</div>
+                
+                <div class="score-display">
+                    <div class="score-item gold">金色: <span id="goldScore">0</span>题</div>
+                    <div class="score-item orange">橙色: <span id="orangeScore">0</span>题</div>
+                    <div class="score-item green">绿色: <span id="greenScore">0</span>题</div>
+                    <div class="score-item blue">蓝色: <span id="blueScore">0</span>题</div>
+                </div>
+                
+                <div class="description" id="colorDescription">
+                    <!-- 颜色描述内容将通过JavaScript动态填充 -->
+                </div>
+                
+                <div class="share-section">
+                    <p>分享这个测试给朋友：</p>
+                    <button class="share-btn" onclick="shareTest()">复制测试链接</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 颜色描述数据[1](@ref)
+        const colorDescriptions = {
+            gold: {
+                title: "金色性格 - 务实有责任心的计划者",
+                description: "您重视责任、规划、稳定和可靠性。是组织的基石，做事有条理，注重细节，值得信赖。金色人格喜欢按部就班，这种人格最好帮他安排一些课外的课表，教练和学员之间的信赖程度会有所提高。在整个训练课程的最一开始，可以先告诉他们等等会做些什么、先后顺序是什么。[1](@ref)"
+            },
+            orange: {
+                title: "橙色性格 - 充满活力的行动者", 
+                description: "您热爱自由、行动、冒险和体验。充满活力与即兴发挥，喜欢挑战和新鲜事物。橙色人格特质的学员，就…随他们发挥吧，让他们累到筋疲力尽就是一次完美的训练。橙色人格特质的学员喜欢主动、自由、胜利、大胆、浮躁、承擔風險。[1](@ref)"
+            },
+            green: {
+                title: "绿色性格 - 逻辑严谨的思想家",
+                description: "您追求知识、逻辑、真理和智慧。是冷静的分析家与思想家，善于解决复杂问题。绿色人格会喜欢追根究底，理论背景越扎实、表达越有逻辑，或许可以和他相处非常融洽。他们独立探索才能理论，喜欢问'为什么'类的问题，做事巧妙。[1](@ref)"
+            },
+            blue: {
+                title: "蓝色性格 - 安静平和的分析者",
+                description: "您关注真诚、关系、成长和深层次沟通。是理想主义的助人者，富有同情心和理解力。蓝色人格特质的人，在带训练时就避免惊动他们，不需要刻意要炒热气氛。他们在训练的当下或许心里正在思考些什么，例如，哪条肌肉在出力。给他们一点空间，让他们自行体会就好。[1](@ref)"
+            }
+        };
+        
+        // 更新进度条
+        function updateProgressBar() {
+            const totalQuestions = 11;
+            let answeredCount = 0;
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionAnswered = document.querySelector(`input[name="q${i}"]:checked`);
+                if (questionAnswered) {
+                    answeredCount++;
+                }
+            }
+            
+            const progressPercent = (answeredCount / totalQuestions) * 100;
+            document.getElementById('progress').style.width = `${progressPercent}%`;
+        }
+        
+        // 为所有选项添加事件监听器以更新进度条
+        document.addEventListener('DOMContentLoaded', function() {
+            const allRadios = document.querySelectorAll('input[type="radio"]');
+            allRadios.forEach(radio => {
+                radio.addEventListener('change', updateProgressBar);
+            });
+        });
+        
+        function calculateResult() {
+            // 检查是否所有题目都已回答
+            const allAnswered = checkAllQuestionsAnswered();
+            if (!allAnswered) {
+                alert("请先完成所有题目！");
+                return;
+            }
+            
+            // 初始化分数
+            let scores = { gold: 0, orange: 0, green: 0, blue: 0 };
+            
+            // 计算每道题的分数[1](@ref)
+            for (let i = 1; i <= 11; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) {
+                    scores[selected.value]++;
+                }
+            }
+            
+            // 找出最高分
+            let maxScore = 0;
+            let mainColor = '';
+            
+            for (const color in scores) {
+                if (scores[color] > maxScore) {
+                    maxScore = scores[color];
+                    mainColor = color;
+                }
+            }
+            
+            // 显示结果
+            displayResult(scores, mainColor);
+        }
+        
+        function checkAllQuestionsAnswered() {
+            for (let i = 1; i <= 11; i++) {
+                const questionAnswered = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!questionAnswered) {
+                    // 滚动到未回答的问题
+                    document.querySelector(`input[name="q${i}"]`).closest('.question').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        function displayResult(scores, mainColor) {
+            // 更新分数显示
+            document.getElementById('goldScore').textContent = scores.gold;
+            document.getElementById('orangeScore').textContent = scores.orange;
+            document.getElementById('greenScore').textContent = scores.green;
+            document.getElementById('blueScore').textContent = scores.blue;
+            
+            // 设置主颜色显示
+            const mainColorElement = document.getElementById('mainColor');
+            mainColorElement.textContent = colorDescriptions[mainColor].title;
+            mainColorElement.className = `color-result ${mainColor}`;
+            
+            // 设置颜色描述
+            document.getElementById('colorDescription').innerHTML = `
+                <h3>${colorDescriptions[mainColor].title}特点：</h3>
+                <p>${colorDescriptions[mainColor].description}</p>
+                <p><strong>True Colors</strong> 是一种模型，用于根据您的个性气质理解自己和他人。橙色、金色、绿色和蓝色用于区分四种核心的True Colors个性风格。我们每个人都拥有四种True Colors的组合，构成我们的人格谱系，通常其中一种风格占主导地位。[1,5](@ref)</p>
+            `;
+            
+            // 显示结果区域
+            document.getElementById('resultSection').style.display = 'block';
+            
+            // 滚动到结果区域
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function shareTest() {
+            const testLink = window.location.href;
+            
+            // 使用现代剪贴板API[6,7](@ref)
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(testLink).then(() => {
+                    alert("测试链接已复制到剪贴板，可以分享给朋友了！");
+                }).catch(err => {
+                    // 如果剪贴板API失败，使用备用方法
+                    fallbackCopyToClipboard(testLink);
+                });
+            } else {
+                // 备用方法
+                fallbackCopyToClipboard(testLink);
+            }
+        }
+        
+        function fallbackCopyToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                alert("测试链接已复制到剪贴板，可以分享给朋友了！");
+            } catch (err) {
+                alert("复制失败，请手动复制链接: " + text);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html>
